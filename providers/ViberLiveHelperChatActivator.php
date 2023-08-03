@@ -29,6 +29,11 @@ class ViberLiveHelperChatActivator {
             if ($event = \erLhcoreClassModelChatWebhook::findOne(['filter' => ['event' => ['chat.web_add_msg_admin', 'bot_id' => $botPrevious->id]]])) {
                 $event->removeThis();
             }
+
+            if ($event = \erLhcoreClassModelChatWebhook::findOne(['filter' => ['event' => ['chat.before_auto_responder_msg_saved', 'bot_id' => $botPrevious->id]]])) {
+                $event->removeThis();
+            }
+
         }
     }
 
@@ -191,6 +196,15 @@ class ViberLiveHelperChatActivator {
         }
         $event = new \erLhcoreClassModelChatWebhook();
         $event->setState(json_decode(file_get_contents('extension/viber/doc/configs/chat.web_add_msg_admin.json'),true));
+        $event->bot_id = $botData['bot']->id;
+        $event->trigger_id = $trigger->id;
+        $event->saveThis();
+
+        if ($botPrevious && $event = \erLhcoreClassModelChatWebhook::findOne(['filter' => ['event' => ['chat.before_auto_responder_msg_saved', 'bot_id' => $botPrevious->id]]])) {
+            $event->removeThis();
+        }
+        $event = new \erLhcoreClassModelChatWebhook();
+        $event->setState(json_decode(file_get_contents('extension/viber/doc/configs/chat.before_auto_responder_msg_saved.json'),true));
         $event->bot_id = $botData['bot']->id;
         $event->trigger_id = $trigger->id;
         $event->saveThis();
