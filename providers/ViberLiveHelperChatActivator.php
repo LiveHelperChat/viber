@@ -1,7 +1,7 @@
 <?php
 
 namespace LiveHelperChatExtension\viber\providers;
-
+#[\AllowDynamicProperties]
 class ViberLiveHelperChatActivator {
 
     // Remove SMS

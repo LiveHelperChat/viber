@@ -3,6 +3,7 @@
 /**
  * Direct integration with Viber
  * */
+#[\AllowDynamicProperties]
 class erLhcoreClassExtensionViber
 {
     private static $persistentSession;
